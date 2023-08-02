@@ -10,7 +10,7 @@ import numpy as np
 from bokeh.layouts import column, row
 from bokeh.models import ColumnDataSource, CustomJS, Slider, Span
 from bokeh.palettes import Spectral9
-from bokeh.plotting import figure, show
+from bokeh.plotting import figure, show, save, output_file
 from bokeh.transform import factor_cmap
 from bokeh.models.widgets import Div
 
@@ -102,6 +102,7 @@ def plot_burden() -> None:
     p = figure(y_range=['2023', '2022'], x_range=(0, 50),
                width=800, height=350,
                title='Tax Revenue (in Millions) by Sector and Year (vertical line is revenue required)',
+               x_axis_label='Tax Revenue (Millions of $)',
                tooltips="$name Revenue: $@$name{0.00}M")
     p.hbar_stack(stackers=sectors, y='year', height=0.7, color=Spectral9, muted_alpha=0.5, legend_label=sectors,
                  source=burden_cds)
@@ -259,7 +260,21 @@ def plot_burden() -> None:
     fst_rate_slider.js_on_change('value', slider_callback)
     frm_rate_slider.js_on_change('value', slider_callback)
 
-    show(row(column(p, Div(text='', height=20), q), Div(text='', width=50),
+    # show(row(column(p, Div(text='', height=20), q), Div(text='', width=50),
+    #          column(Div(text='', height=50),
+    #                 res_rate_slider,
+    #                 bus_rate_slider,
+    #                 utl_rate_slider,
+    #                 ind_rate_slider,
+    #                 ptp_rate_slider,
+    #                 pti_rate_slider,
+    #                 rec_rate_slider,
+    #                 fst_rate_slider,
+    #                 frm_rate_slider,
+    #                 r)))
+
+    output_file("tax_rate_tool.html")
+    save(row(column(p, Div(text='', height=20), q), Div(text='', width=50),
              column(Div(text='', height=50),
                     res_rate_slider,
                     bus_rate_slider,
@@ -271,7 +286,6 @@ def plot_burden() -> None:
                     fst_rate_slider,
                     frm_rate_slider,
                     r)))
-
 
 # run main
 if __name__ == '__main__':
