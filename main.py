@@ -38,69 +38,69 @@ def plot_burden() -> None:
                'Farm']
 
     # dictionary of property values (in millions of dollars) with sector name as key
-    prop_value_2023 = dict(zip(sectors, np.array([11044.472335,
-                                                  1840.787650,
-                                                  56.503260,
-                                                  118.545800,
-                                                  21.001570,
-                                                  4.476430,
-                                                  32.735500,
-                                                  1.897900,
-                                                  0.052110])))
+    prop_value_current = dict(zip(sectors, np.array([11044.472335,  # 'Residential'
+                                                  1840.787650,      # 'Business'
+                                                  56.503260,        # 'Utilities'
+                                                  118.545800,       # 'Light_Industry'
+                                                  21.001570,        # 'Port_Property'
+                                                  4.476430,         # 'Port_Improvement'
+                                                  32.735500,        # 'Recreation'
+                                                  1.897900,         # 'Forests'
+                                                  0.052110])))      # 'Farm'
 
-    prop_value_2022 = dict(zip(sectors, np.array([9910.410785,  # 'Residential'
-                                                  1341.318584,  # 'Business'
-                                                  52.068115,  # 'Utilities'
-                                                  80.846200,  # 'Light_Industry'
-                                                  19.178700,  # 'Port_Property'
-                                                  5.684300,  # 'Port_Improvement'
-                                                  36.400900,  # 'Recreation'
-                                                  1.897900,  # 'Forests'
-                                                  0.052109])))  # 'Farm'
+    prop_value_previous = dict(zip(sectors, np.array([11044.472335, # 'Residential'
+                                                  1840.787650,      # 'Business'
+                                                  56.503260,        # 'Utilities'
+                                                  118.545800,       # 'Light_Industry'
+                                                  21.001570,        # 'Port_Property'
+                                                  4.476430,         # 'Port_Improvement'
+                                                  32.735500,        # 'Recreation'
+                                                  1.897900,         # 'Forests'
+                                                  0.052110])))      # 'Farm'
 
     # dictionary of mil rate with sector name as key
-    rate_2023 = dict(zip(sectors, np.array([2.1246,
-                                            5.3115,
-                                            40.0000,
-                                            8.1160,
-                                            27.5000,
-                                            22.5000,
-                                            2.1246,
-                                            5.3115,
+    rate_current = dict(zip(sectors, np.array([2.1246,  # 'Residential'
+                                            5.3115,     # 'Business'
+                                            40.0000,    # 'Utilities'
+                                            8.1160,     # 'Light_Industry'
+                                            27.5000,    # 'Port_Property'
+                                            22.5000,    # 'Port_Improvement'
+                                            2.1246,     # 'Recreation'
+                                            5.3115,     # 'Forests'
+                                            2.1246])))  # 'Farm'
+    rate_previous = dict(zip(sectors, np.array([2.1246,  # 'Residential'
+                                            5.3115,     # 'Business'
+                                            40.0000,    # 'Utilities'
+                                            8.1160,     # 'Light_Industry'
+                                            27.5000,    # 'Port_Property'
+                                            22.5000,    # 'Port_Improvement'
+                                            2.1246,     # 'Recreation'
+                                            5.3115,     # 'Forests'
                                             2.1246])))
-    rate_2022 = dict(zip(sectors, np.array([2.2928,
-                                            5.8925,
-                                            40.0000,
-                                            8.7585,
-                                            27.5000,
-                                            22.5000,
-                                            2.2928,
-                                            5.8925,
-                                            2.2928])))
 
     # default (ie. current year) burden per sector is the rate * property value per sector
-    burden_2023 = dict(
-        zip(sectors, np.array(list(rate_2023.values())) * np.array(list(prop_value_2023.values())) / 1000))
-    burden_2022 = dict(
-        zip(sectors, np.array(list(rate_2022.values())) * np.array(list(prop_value_2022.values())) / 1000))
+    burden_current = dict(
+        zip(sectors, np.array(list(rate_current.values())) * np.array(list(prop_value_current.values())) / 1000))
+    burden_previous = dict(
+        zip(sectors, np.array(list(rate_previous.values())) * np.array(list(prop_value_previous.values())) / 1000))
 
     # tax burden data
-    burden_df = pd.DataFrame({'Residential': [burden_2023['Residential'], burden_2022['Residential']],
-                              'Business': [burden_2023['Business'], burden_2022['Business']],
-                              'Utilities': [burden_2023['Utilities'], burden_2022['Utilities']],
-                              'Light_Industry': [burden_2023['Light_Industry'], burden_2022['Light_Industry']],
-                              'Port_Property': [burden_2023['Port_Property'], burden_2022['Port_Property']],
-                              'Port_Improvement': [burden_2023['Port_Improvement'], burden_2022['Port_Improvement']],
-                              'Recreation': [burden_2023['Recreation'], burden_2022['Recreation']],
-                              'Forests': [burden_2023['Forests'], burden_2022['Forests']],
-                              'Farm': [burden_2023['Farm'], burden_2022['Farm']],
-                              'year': ['2023', '2022']})
+    burden_df = pd.DataFrame({'Residential': [burden_current['Residential'], burden_previous['Residential']],
+                              'Business': [burden_current['Business'], burden_previous['Business']],
+                              'Utilities': [burden_current['Utilities'], burden_previous['Utilities']],
+                              'Light_Industry': [burden_current['Light_Industry'], burden_previous['Light_Industry']],
+                              'Port_Property': [burden_current['Port_Property'], burden_previous['Port_Property']],
+                              'Port_Improvement': [burden_current['Port_Improvement'], burden_previous['Port_Improvement']],
+                              'Recreation': [burden_current['Recreation'], burden_previous['Recreation']],
+                              'Forests': [burden_current['Forests'], burden_previous['Forests']],
+                              'Farm': [burden_current['Farm'], burden_previous['Farm']],
+                              'year': ['2024', '2023']})
     # print(burden_df)
     burden_cds = ColumnDataSource(data=burden_df)
 
     # create horizontal stack plot of tax revenue by sector and year
-    p = figure(y_range=['2023', '2022'], x_range=(0, 50),
-               width=800, height=350,
+    p = figure(y_range=['2024', '2023'], x_range=(0, 55),
+               width=700, height=350,
                title='Tax Revenue (in Millions) by Sector and Year (vertical line is revenue required)',
                x_axis_label='Tax Revenue (Millions of $)',
                tooltips="$name Revenue: $@$name{0.00}M")
@@ -110,14 +110,14 @@ def plot_burden() -> None:
     p.legend.click_policy = "mute"
 
     # add the line the total revenue required
-    revenue_required_2022 = 34.165
-    revenue_required_2023 = 37.220
-    revenue_required_line_2022 = Span(location=revenue_required_2022, dimension='height',
+    revenue_required_previous = 37.220
+    revenue_required_current = 41.070
+    revenue_required_line_previous = Span(location=revenue_required_previous, dimension='height',
                                       line_color='grey', line_width=1, line_alpha=0.5)
-    revenue_required_line_2023 = Span(location=revenue_required_2023, dimension='height',
+    revenue_required_line_current = Span(location=revenue_required_current, dimension='height',
                                       line_color='black', line_width=3, line_alpha=0.5)
-    p.add_layout(revenue_required_line_2022)
-    p.add_layout(revenue_required_line_2023)
+    p.add_layout(revenue_required_line_previous)
+    p.add_layout(revenue_required_line_current)
 
     # get the burden difference from previous year
     # there must be a cleaner way to do this
@@ -128,15 +128,17 @@ def plot_burden() -> None:
     diff_cds = ColumnDataSource(data=dict(sector=list(diff_dict.keys()), diff=list(diff_dict.values())))
 
     # plot for the tax rate change from previous year
-    q = figure(x_range=sectors, y_range=(-50, 50), height=250, width=800, toolbar_location='right',
+    q = figure(x_range=sectors, y_range=(-25, 25), height=250, width=700, toolbar_location='right',
                title="% Change per Sector", tooltips="@diff{0.0}%")
 
     q.vbar(x='sector', top='diff', width=0.9, source=diff_cds,
            line_color='white', fill_color=factor_cmap('sector', palette=Spectral9, factors=sectors))
 
     # text box to tell user if they have met revenue requirements
-    box_color = ['forestgreen']
-    box_text = ['just right']
+    #box_color = ['forestgreen']
+    #box_text = ['just right']
+    box_color = ['white']
+    box_text = ['try a slider']
 
     # create a data source to enable refreshing of fill & text color
     box_cds = ColumnDataSource(data=dict(color=box_color, text=box_text))
@@ -152,37 +154,37 @@ def plot_burden() -> None:
     r.yaxis.visible = False
 
     # make the sliders
-    res_rate_slider = Slider(start=rate_2023['Residential'] - 0.3, end=rate_2023['Residential'] + 0.3,
-                             value=rate_2023['Residential'], step=0.001, format='0.000',
-                             title='Residential Tax Rate (2023)')
-    utl_rate_slider = Slider(start=rate_2023['Utilities'] - 5, end=rate_2023['Utilities'],
-                             value=rate_2023['Utilities'], step=0.1, format='0.000',
-                             title='Utilities Tax Rate (2023)')
-    ptp_rate_slider = Slider(start=rate_2023['Port_Property'] - 5, end=rate_2023['Port_Property'] + 5,
-                             value=rate_2023['Port_Property'], step=0.01, format='0.000',
-                             title='Port Property Tax Rate (2023)')
-    pti_rate_slider = Slider(start=rate_2023['Port_Improvement'] - 5, end=rate_2023['Port_Improvement'] + 5,
-                             value=rate_2023['Port_Improvement'], step=0.01, format='0.000',
-                             title='Port Improvement Tax Rate (2023)')
-    ind_rate_slider = Slider(start=rate_2023['Light_Industry'] - 1, end=rate_2023['Light_Industry'] + 1,
-                             value=rate_2023['Light_Industry'], step=0.005, format='0.000',
-                             title='Light Industry Tax Rate (2023)')
-    bus_rate_slider = Slider(start=rate_2023['Business'] - 1, end=rate_2023['Business'] + 1,
-                             value=rate_2023['Business'], step=0.005, format='0.000',
-                             title='Business Tax Rate (2023)')
-    fst_rate_slider = Slider(start=rate_2023['Forests'] - 1, end=rate_2023['Forests'] + 1,
-                             value=rate_2023['Forests'], step=0.005, format='0.000',
-                             title='Forests Tax Rate (2023)')
-    rec_rate_slider = Slider(start=rate_2023['Recreation'] - 0.5, end=rate_2023['Recreation'] + 0.5,
-                             value=rate_2023['Recreation'], step=0.001, format='0.000',
-                             title='Recreation Tax Rate (2023)')
-    frm_rate_slider = Slider(start=rate_2023['Farm'] - 0.5, end=rate_2023['Farm'] + 0.5,
-                             value=rate_2023['Farm'], step=0.001, format='0.000',
-                             title='Farm Tax Rate (2023)')
+    res_rate_slider = Slider(start=rate_current['Residential'] - 0.5, end=rate_current['Residential'] + 0.5,
+                             value=rate_current['Residential'], step=0.001, format='0.000',
+                             title='Residential Tax Rate')
+    utl_rate_slider = Slider(start=rate_current['Utilities'] - 0.0001, end=rate_current['Utilities'],
+                             value=rate_current['Utilities'], step=0.1, format='0.000',
+                             title='Utilities Tax Rate (fixed at 40.000)')
+    ptp_rate_slider = Slider(start=rate_current['Port_Property'] - 0.0001, end=rate_current['Port_Property'],
+                             value=rate_current['Port_Property'], step=0.1, format='0.000',
+                             title='Port Property Tax Rate (fixed at 27.500)')
+    pti_rate_slider = Slider(start=rate_current['Port_Improvement'] - 0.0001, end=rate_current['Port_Improvement'],
+                             value=rate_current['Port_Improvement'], step=0.1, format='0.000',
+                             title='Port Improvement Tax Rate (fixed at 22.500)')
+    ind_rate_slider = Slider(start=rate_current['Light_Industry'] - 2, end=rate_current['Light_Industry'] + 2,
+                             value=rate_current['Light_Industry'], step=0.005, format='0.000',
+                             title='Light Industry Tax Rate')
+    bus_rate_slider = Slider(start=rate_current['Business'] - 2, end=rate_current['Business'] + 2,
+                             value=rate_current['Business'], step=0.005, format='0.000',
+                             title='Business Tax Rate')
+    fst_rate_slider = Slider(start=rate_current['Forests'] - 2, end=rate_current['Forests'] + 2,
+                             value=rate_current['Forests'], step=0.005, format='0.000',
+                             title='Forests Tax Rate')
+    rec_rate_slider = Slider(start=rate_current['Recreation'] - 2, end=rate_current['Recreation'] + 2,
+                             value=rate_current['Recreation'], step=0.001, format='0.000',
+                             title='Recreation Tax Rate')
+    frm_rate_slider = Slider(start=rate_current['Farm'] - 2, end=rate_current['Farm'] + 2,
+                             value=rate_current['Farm'], step=0.001, format='0.000',
+                             title='Farm Tax Rate')
 
     slider_callback = CustomJS(
-        args=dict(sedit=burden_cds, prop_value=prop_value_2023, sdiff=diff_cds,
-                  revenue_required=revenue_required_2023, sbox=box_cds,
+        args=dict(sedit=burden_cds, prop_value=prop_value_current, sdiff=diff_cds,
+                  revenue_required=revenue_required_current, sbox=box_cds,
                   res_rate_slider=res_rate_slider,
                   utl_rate_slider=utl_rate_slider,
                   ptp_rate_slider=ptp_rate_slider,
@@ -237,12 +239,12 @@ def plot_burden() -> None:
         // check if the total revenue target is met
         const revenue = res_burden + utl_burden + ptp_burden + pti_burden + ind_burden + bus_burden + fst_burden + rec_burden + frm_burden;
         const balance = revenue_required - revenue;
-        const epsilon = 0.01;  // this is in Millions, so 0.01 = $100
+        const epsilon = 0.01;  // this is in Millions, so 0.01 = $10k
         if ( balance < -1*epsilon ){
-            sbox.data = { color: ['black'], text: ['too much'] };
+            sbox.data = { color: ['black'], text: ['$'+-1*balance.toFixed(2)+'M too much'] };
         }
         else if ( balance > epsilon ){
-            sbox.data = { color: ['darkred'], text: ['not enough'] };
+            sbox.data = { color: ['darkred'], text: ['$'+balance.toFixed(2)+'M too little'] };
         }
         else{
             sbox.data = { color: ['forestgreen'], text: ['just right'] };
